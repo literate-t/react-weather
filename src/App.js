@@ -1,10 +1,7 @@
-import Map from './Map';
+import HomePage from './HomePage';
 
 function App() {
-
-  return (
-    <Map />
-  )
+  return <HomePage />;
 }
 
 export default App;
