@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Map from './Map';
 import { useState } from 'react';
+import { useEffect } from 'react';
 const FlexContainer = styled.section`
   display: flex;
   align-items: center;
@@ -15,6 +16,11 @@ const Content = () => {
   const onClickArea = (area) => {
     setArea(area);
   };
+
+  useEffect(() => {
+    let url =
+      'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst';
+  });
 
   const data = state.results[0];
   const { location } = data.geometry;

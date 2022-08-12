@@ -1,37 +1,21 @@
-/* eslint-disable no-undef */
-
 import { getAddressFromPosition } from './api/getData';
 import { useEffect, useRef, useState } from 'react';
 
+let map;
+let marker;
+let geocoder;
+
 const Map = ({ location, onClickArea }) => {
   const divRef = useRef();
-  const { lat, lng } = location;
   const { kakao } = window;
   const [position, setPosition] = useState({
-    lat,
-    lng,
+    lat: location.lat,
+    lng: location.lng,
   });
-
-  let map;
-  let marker;
-
-  // useEffect(() => {
-  //   let options = {
-  //     center: new kakao.maps.LatLng(position.lat, position.lng), //지도의 중심좌표.
-  //     level: 3, //지도의 레벨(확대, 축소 정도)
-  //   };
-
-  //   map = new kakao.maps.Map(divRef.current, options);
-
-  //   marker = new kakao.maps.Marker({
-  //     map,
-  //     position: new kakao.maps.LatLng(position.lat, position.lng),
-  //   });
-  // }, []);
 
   useEffect(() => {
     let options = {
-      center: new kakao.maps.LatLng(position.lat, position.lng), //지도의 중심좌표.
+      center: new kakao.maps.LatLng(location.lat, location.lng), //지도의 중심좌표.
       level: 3, //지도의 레벨(확대, 축소 정도)
     };
 
@@ -39,7 +23,6 @@ const Map = ({ location, onClickArea }) => {
 
     marker = new kakao.maps.Marker({
       map,
-      position: new kakao.maps.LatLng(position.lat, position.lng),
     });
 
     kakao.maps.event.addListener(map, 'click', (e) => {
@@ -47,18 +30,44 @@ const Map = ({ location, onClickArea }) => {
       setPosition({ ...position, lat: Ma, lng: La });
     });
 
+    geocoder = new kakao.maps.services.Geocoder();
+
     return () => marker.setMap(null);
-  }, [position]);
+  }, []);
 
   useEffect(() => {
-    const getData = async () => {
-      const result = await getAddressFromPosition(position);
-      const address = result.data.results[0].formatted_address;
-      onClickArea(address);
+    marker = new kakao.maps.Marker({
+      map,
+      position: new kakao.maps.LatLng(position.lat, position.lng),
+    });
 
-      console.log(address);
+    //console.log(position);
+
+    const getData = async () => {
+      const { lat, lng } = position;
+      let address;
+      geocoder.coord2Address(lng, lat, (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
+          const data = result[0];
+          console.log(result);
+          address = data.address.address_name;
+          const { region_1depth_name, region_2depth_name, region_3depth_name } =
+            data.address;
+
+          console.log(
+            region_1depth_name,
+            region_2depth_name,
+            region_3depth_name
+          );
+          console.log(data.address);
+          onClickArea(address);
+        }
+      });
     };
+
     getData();
+
+    return () => marker.setMap(null);
   }, [position]);
 
   return (
