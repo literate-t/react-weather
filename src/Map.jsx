@@ -1,4 +1,3 @@
-import { getAddressFromPosition } from './api/getData';
 import { useEffect, useRef, useState } from 'react';
 
 let map;
@@ -49,17 +48,17 @@ const Map = ({ location, onClickArea }) => {
       geocoder.coord2Address(lng, lat, (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
           const data = result[0];
-          console.log(result);
+          //console.log(result);
           address = data.address.address_name;
           const { region_1depth_name, region_2depth_name, region_3depth_name } =
             data.address;
 
-          console.log(
-            region_1depth_name,
-            region_2depth_name,
-            region_3depth_name
-          );
-          console.log(data.address);
+          // console.log(
+          //   region_1depth_name,
+          //   region_2depth_name,
+          //   region_3depth_name
+          // );
+          // console.log(data.address);
           onClickArea(address);
         }
       });
@@ -71,15 +70,17 @@ const Map = ({ location, onClickArea }) => {
   }, [position]);
 
   return (
-    <div
-      ref={divRef}
-      style={{
-        width: '90vw',
-        height: '60vh',
-        border: '1px solid black',
-        borderRadius: '0.5rem',
-      }}
-    ></div>
+    <>
+      <div
+        ref={divRef}
+        style={{
+          width: '90vw',
+          height: '60vh',
+          border: '1px solid black',
+          borderRadius: '0.5rem',
+        }}
+      ></div>
+    </>
   );
 };
 

@@ -16,3 +16,14 @@ export const getAddressFromPosition = async (latlng) => {
 
   return result;
 };
+
+export const getRealTimeData = async () => {
+  const date = new Date();
+  const customDate = `${date.getFullYear()}${date.getMonth()}${date.getDate}`;
+  const url =
+    'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?';
+
+  const result = await axios(
+    'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst'
+  );
+};

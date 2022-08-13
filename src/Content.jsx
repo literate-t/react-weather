@@ -1,8 +1,7 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Map from './Map';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 const FlexContainer = styled.section`
   display: flex;
   align-items: center;
@@ -10,19 +9,27 @@ const FlexContainer = styled.section`
 `;
 
 const DivAddress = styled.div``;
+
+const NavContainer = styled.nav``;
+
+let myState;
+
 const Content = () => {
   const { state } = useLocation();
+  if (state) {
+    console.log('if state');
+    myState = state;
+  }
+  useEffect(() => {
+    console.log('useEffect');
+  }, []);
   const [area, setArea] = useState('');
   const onClickArea = (area) => {
     setArea(area);
   };
 
-  useEffect(() => {
-    let url =
-      'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst';
-  });
-
-  const data = state.results[0];
+  console.log({ myState });
+  const data = myState.results[0];
   const { location } = data.geometry;
 
   return (
@@ -33,6 +40,14 @@ const Content = () => {
       <DivAddress>{area}</DivAddress>
       <br />
       <Link to="/">뒤로 가기</Link>
+      <br />
+      <NavContainer>
+        <Link style={{ paddingRight: '0.5rem' }} to="/content/real-time">
+          실황
+        </Link>
+        <Link to="/content/fast-expect">예보</Link>
+      </NavContainer>
+      <Outlet />
     </FlexContainer>
   );
 };

@@ -47,6 +47,7 @@ const HomePage = () => {
       navigate('/content', { state: data });
     } else if (inputRef.current.value !== '') {
       alert(`${inputRef.current.value} 검색어가 올바르지 않습니다.`);
+      inputRef.current.value = '';
     }
   };
 
@@ -68,6 +69,7 @@ const HomePage = () => {
           onChange={(e) => debounce(() => onInputChange(e), 50)}
           onKeyDown={onKeyDown}
           placeholder="지명 검색"
+          autoFocus
         />
         <InputButton onClick={onSearch}>
           <FontAwesomeIcon icon={faSearch} size="xl" />
