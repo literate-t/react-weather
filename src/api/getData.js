@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { format, getBaseDate } from '../util';
 
 export const getPositionFromAddress = async (location) => {
   const result = await axios(
@@ -19,11 +20,24 @@ export const getAddressFromPosition = async (latlng) => {
 
 export const getRealTimeData = async () => {
   const date = new Date();
-  const customDate = `${date.getFullYear()}${date.getMonth()}${date.getDate}`;
-  const url =
+
+  const base_url =
     'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?';
 
-  const result = await axios(
-    'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst'
-  );
+  const params = new URLSearchParams({
+    ServiceKey: process.env.REACT_APP_DATA_PORTAL_DECODING_KEY,
+    pageNo: 1,
+    numOfRows: 1000,
+    dataType: 'JSON',
+    base_date: getBaseDate(),
+    base_time: `${format(date.getHours())}00`,
+    nx: 55,
+    ny: 127,
+  });
+
+  const url = base_url + params.toString();
+
+  const result = await axios(url);
+
+  return result;
 };

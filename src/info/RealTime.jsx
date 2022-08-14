@@ -1,7 +1,14 @@
+import { useEffect } from 'react';
+import { getRealTimeData } from '../api/getData';
+
 export default function RealTime() {
-  // useEffect(() => {
-  //   let url =
-  //     'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst';
-  // });
+  useEffect(() => {
+    const getData = async () => {
+      const result = await getRealTimeData();
+      console.log(result);
+    };
+
+    getData();
+  }, []);
   return <div>RealTime</div>;
 }

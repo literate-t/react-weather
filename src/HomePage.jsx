@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getPositionFromAddress } from './api/getData';
-import debounce from './util/debouce';
+import { debounce } from './util';
 
 const FlexContainer = styled.section`
   margin: 15% auto;
