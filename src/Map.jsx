@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { formatAddress } from './util';
 
 let map;
 let marker;
@@ -15,7 +16,7 @@ const Map = ({ location, onClickArea }) => {
   useEffect(() => {
     let options = {
       center: new kakao.maps.LatLng(location.lat, location.lng), //지도의 중심좌표.
-      level: 3, //지도의 레벨(확대, 축소 정도)
+      level: 7, //지도의 레벨(확대, 축소 정도)
     };
 
     map = new kakao.maps.Map(divRef.current, options);
@@ -44,21 +45,16 @@ const Map = ({ location, onClickArea }) => {
 
     const getData = async () => {
       const { lat, lng } = position;
-      let address;
       geocoder.coord2Address(lng, lat, (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
           const data = result[0];
-          //console.log(result);
-          address = data.address.address_name;
           const { region_1depth_name, region_2depth_name, region_3depth_name } =
             data.address;
-
-          // console.log(
-          //   region_1depth_name,
-          //   region_2depth_name,
-          //   region_3depth_name
-          // );
-          // console.log(data.address);
+          const address = formatAddress(
+            region_1depth_name,
+            region_2depth_name,
+            region_3depth_name
+          );
           onClickArea(address);
         }
       });

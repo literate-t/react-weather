@@ -18,7 +18,7 @@ export const getAddressFromPosition = async (latlng) => {
   return result;
 };
 
-export const getRealTimeData = async () => {
+export const getRealTimeFcst = async (X, Y) => {
   const date = new Date();
 
   const base_url =
@@ -30,9 +30,9 @@ export const getRealTimeData = async () => {
     numOfRows: 1000,
     dataType: 'JSON',
     base_date: getBaseDate(),
-    base_time: `${format(date.getHours())}00`,
-    nx: 55,
-    ny: 127,
+    base_time: `${format(date.getHours() - 1)}00`,
+    nx: X,
+    ny: Y,
   });
 
   const url = base_url + params.toString();
@@ -41,3 +41,5 @@ export const getRealTimeData = async () => {
 
   return result;
 };
+
+export const getShortNcst = async () => {};

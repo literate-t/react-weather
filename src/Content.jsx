@@ -2,6 +2,8 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Map from './Map';
 import { useState, useEffect } from 'react';
+import RealTimeFcst from './info/RealTimeFsct';
+import ShortTimeNcst from './info/ShortTimeNcst';
 
 const FlexContainer = styled.section`
   display: flex;
@@ -11,7 +13,28 @@ const FlexContainer = styled.section`
 
 const DivAddress = styled.div``;
 
-const NavContainer = styled.nav``;
+const DivInfo = styled.nav`
+  width: 90vw;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const DivRealTime = styled.div`
+  flex-basis: 30%;
+  border: 1px solid black;
+  margin: 0.25rem;
+
+  @media screen and (max-width: 50rem) {
+    flex-basis: 50%;
+  }
+`;
+
+const DivExpect = styled.div`
+  border: 1px solid black;
+  flex-basis: 50%;
+  flex-grow: 1;
+  margin: 0.25rem;
+`;
 
 let myState;
 
@@ -20,8 +43,9 @@ const Content = () => {
   if (state) {
     myState = state;
   }
-  useEffect(() => {}, []);
+
   const [area, setArea] = useState('');
+
   const onClickArea = (area) => {
     setArea(area);
   };
@@ -45,9 +69,16 @@ const Content = () => {
       {/* 
         지도에 위치를 찍자마자
         실황과 예보 같이 보여주기
-        <RealTime />
-        <Expect />
-       */}
+          */}
+      <DivInfo>
+        <DivRealTime>
+          <RealTimeFcst area={area} />
+        </DivRealTime>
+        <DivExpect>
+          <ShortTimeNcst area={area} />
+        </DivExpect>
+      </DivInfo>
+
       {/* <NavContainer>
         <Link style={{ paddingRight: '0.5rem' }} to="/content/real-time">
           실황
