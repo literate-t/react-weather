@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { format, getBaseDate } from '../util';
+import { format, getBaseDate, getPosition, sortByFcstTime } from '../util';
 
 export const getPositionFromAddress = async (location) => {
   const result = await axios(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${process.env.REACT_APP_GOOGLE_GEOCODING_KEY}`
   );
-
   return result;
 };
 
@@ -18,11 +17,11 @@ export const getAddressFromPosition = async (latlng) => {
   return result;
 };
 
-export const getRealTimeFcst = async (X, Y) => {
+export const getWeatherData = async (X, Y, path) => {
   const date = new Date();
 
   const base_url =
-    'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?';
+    'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/' + path + '?';
 
   const params = new URLSearchParams({
     ServiceKey: process.env.REACT_APP_DATA_PORTAL_DECODING_KEY,
@@ -42,4 +41,25 @@ export const getRealTimeFcst = async (X, Y) => {
   return result;
 };
 
-export const getShortNcst = async () => {};
+export const getData = async (area, path, setStates) => {
+  setStates([], false);
+
+  try {
+    const { X, Y } = await getPosition(area);
+    const result = await getWeatherData(X, Y, path);
+    let { item } = result.data.response.body.items;
+
+    if ('getUltraSrtFcst' === path) {
+      item.sort((a, b) => {
+        if (a.fcstTime < b.fcstTime) {
+          return -1;
+        }
+      });
+      item = sortByFcstTime(item);
+    }
+
+    setStates(item, true);
+  } catch (e) {
+    //alert('클릭한 지역의 좌표를 불러올 수 없습니다');
+  }
+};

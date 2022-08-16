@@ -31,7 +31,7 @@ const InputButton = styled.button`
   background-color: white;
   border: none;
 `;
-
+let count = 0;
 const HomePage = () => {
   const [region, setRegion] = useState('');
   const inputRef = useRef();
@@ -43,7 +43,9 @@ const HomePage = () => {
     //inputRef.current.value = '';
 
     if (data.status === 'OK') {
-      //console.log(data);
+      console.log('HomePage', data);
+      // count += 1;
+      // console.log(count);
       navigate('/content', { state: data });
     } else if (inputRef.current.value !== '') {
       alert(`${inputRef.current.value} 검색어가 올바르지 않습니다.`);

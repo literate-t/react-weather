@@ -89,7 +89,49 @@ export const value = {
     2: '비/눈',
     3: '눈',
     4: '소나기',
+    5: '빗방울',
+    6: '빗방울눈날림',
+    7: '눈날림',
   },
   RN1: 'mm',
   T1H: '°',
+};
+
+export const sortByFcstTime = (data) => {
+  let count = 0;
+  return data.reduce((prev, curr) => {
+    const { fcstTime, fcstValue, category } = curr;
+
+    if (0 < count) {
+      const prevIndex = count - 1;
+      const key = Object.keys(prev[prevIndex])[0];
+      if (fcstTime === key) {
+        const newCurrnt = {
+          [fcstTime]: {
+            [category]: fcstValue,
+          },
+        };
+        const obj = {};
+        obj[fcstTime] = {
+          ...prev[prevIndex][fcstTime],
+          ...newCurrnt[fcstTime],
+        };
+        prev[prevIndex] = obj;
+
+        return prev;
+      }
+    }
+
+    count += 1;
+
+    const obj = {
+      [fcstTime]: {
+        [category]: fcstValue,
+      },
+    };
+
+    const newArry = [...prev, obj];
+
+    return newArry;
+  }, []);
 };
