@@ -17,7 +17,7 @@ const FlexContainer = styled.div`
   align-items: center;
 `;
 
-const ShortTimeNcst = ({ area }) => {
+const ShortTimeNcst = ({ address }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const setStates = (item, flag) => {
@@ -26,11 +26,11 @@ const ShortTimeNcst = ({ area }) => {
   };
 
   useEffect(() => {
-    getData(area, 'getUltraSrtFcst', setStates);
-  }, [area]);
+    getData(address, 'getUltraSrtFcst', setStates);
+  }, [address]);
 
   useEffect(() => {
-    console.log(data);
+    //console.log(data);
   }, [data]);
 
   return (

@@ -31,19 +31,20 @@ const InputButton = styled.button`
   background-color: white;
   border: none;
 `;
-let count = 0;
 const HomePage = () => {
   const [region, setRegion] = useState('');
   const inputRef = useRef();
   const navigate = useNavigate();
+  const { kakao } = window;
 
   const onSearch = async () => {
     const result = await getPositionFromAddress(region);
+
     const { data } = result;
     //inputRef.current.value = '';
 
     if (data.status === 'OK') {
-      console.log('HomePage', data);
+      //console.log('HomePage', data);
       // count += 1;
       // console.log(count);
       navigate('/content', { state: data });

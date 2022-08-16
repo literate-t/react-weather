@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import RealTimeFcst from './info/RealTimeFsct';
 import ShortTimeNcst from './info/ShortTimeNcst';
 import Footer from './Footer';
+import { formatAddress } from './util';
 
 const FlexContainer = styled.section`
   display: flex;
@@ -43,44 +44,41 @@ const DivMap = styled.div`
   margin-top: 1.5%;
 `;
 
-let myState;
-
 const Content = () => {
+  const { kakao } = window;
   const { state } = useLocation();
-  //const [data, setData] = useState(state);
-  if (state) {
-    myState = state;
-  }
+  const { formatted_address } = state.results[0];
+  const resultStr = formatted_address.split(' ').slice(1).join(' ');
+  //console.log(state.results[0]);
+  const [address, setAddress] = useState('');
 
-  const [area, setArea] = useState('');
+  // if (state) {
+  //   myState = state;
+  // }
+
+  //let loc; // = { lat: 37.60753611111111, lng: 126.9341888888889 };
+
+  const result = state.results[0];
+  const { location } = result.geometry;
 
   const onClickArea = (area) => {
-    setArea(area);
+    setAddress(area);
   };
-
-  let loc = { lat: 37.60753611111111, lng: 126.9341888888889 };
-  if (myState) {
-    const result = myState.results[0];
-    const { location } = result.geometry;
-    loc = location;
-  }
 
   return (
     <FlexContainer>
       <DivMap>
-        <Map location={loc} onClickArea={onClickArea} />
+        <Map location={location} onClickArea={onClickArea} />
       </DivMap>
       <br />
-      <DivAddress>{area}</DivAddress>
+      <DivAddress>{address}</DivAddress>
 
       <br />
       <DivInfo>
         <DivRealTime>
-          <RealTimeFcst area={area} />
+          {address && <RealTimeFcst address={address} />}
         </DivRealTime>
-        <DivExpect>
-          <ShortTimeNcst area={area} />
-        </DivExpect>
+        <DivExpect>{address && <ShortTimeNcst address={address} />}</DivExpect>
       </DivInfo>
       <Link to="/">뒤로 가기</Link>
       <br />

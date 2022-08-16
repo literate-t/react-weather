@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { format, getBaseDate, getPosition, sortByFcstTime } from '../util';
+import { format, getBaseDate, getArea, sortByFcstTime } from '../util';
 
 export const getPositionFromAddress = async (location) => {
   const result = await axios(
@@ -43,9 +43,10 @@ export const getWeatherData = async (X, Y, path) => {
 
 export const getData = async (area, path, setStates) => {
   setStates([], false);
-
-  try {
-    const { X, Y } = await getPosition(area);
+  // console.log('getData');
+  const resultArea = await getArea(area);
+  if (resultArea) {
+    const { X, Y } = resultArea;
     const result = await getWeatherData(X, Y, path);
     let { item } = result.data.response.body.items;
 
@@ -59,7 +60,10 @@ export const getData = async (area, path, setStates) => {
     }
 
     setStates(item, true);
-  } catch (e) {
-    //alert('클릭한 지역의 좌표를 불러올 수 없습니다');
+  } else {
+    // to call once
+    if (path === 'getUltraSrtFcst') {
+      alert('클릭한 지역의 좌표를 불러올 수 없습니다');
+    }
   }
 };

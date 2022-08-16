@@ -55,7 +55,7 @@ export const formatAddress = (
   return `${region_1} ${region_2} ${region_3}`;
 };
 
-export const getPosition = async (area) => {
+export const getArea = async (area) => {
   const region = area.split(' ');
 
   const result = data.find((item) => {
@@ -84,7 +84,7 @@ export const value = {
     4: '흐림',
   },
   PTY: {
-    0: '해당 사항 없음',
+    0: '',
     1: '비',
     2: '비/눈',
     3: '눈',

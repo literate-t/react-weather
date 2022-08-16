@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getData, getRealTimeFcst, getWeatherData } from '../api/getData';
 import { category, getPosition, value } from '../util';
 import loadingSpinner from '../asset/loading-spinner.gif';
@@ -17,7 +17,7 @@ const FlexContainer = styled.div`
   align-items: center;
 `;
 
-const RealTimeFcst = ({ area }) => {
+const RealTimeFcst = ({ address }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -25,10 +25,16 @@ const RealTimeFcst = ({ area }) => {
     setData(item);
     setIsLoading(flag);
   };
-
+  const isUnmountRef = useRef(false);
   useEffect(() => {
-    getData(area, 'getUltraSrtNcst', setStates);
-  }, [area]);
+    isUnmountRef.current = false;
+    if (!isUnmountRef.current) {
+      getData(address, 'getUltraSrtNcst', setStates);
+    }
+    return () => {
+      isUnmountRef.current = true;
+    };
+  }, [address]);
   return (
     <>
       {!isLoading && <Img src={loadingSpinner} alt="spinner" />}
