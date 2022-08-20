@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { format, getBaseDate, getArea, sortByFcstTime } from '../util';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const getPositionFromAddress = async (location) => {
   const result = await axios(
