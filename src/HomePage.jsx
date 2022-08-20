@@ -35,18 +35,13 @@ const HomePage = () => {
   const [region, setRegion] = useState('');
   const inputRef = useRef();
   const navigate = useNavigate();
-  const { kakao } = window;
 
   const onSearch = async () => {
     const result = await getPositionFromAddress(region);
 
     const { data } = result;
-    //inputRef.current.value = '';
 
     if (data.status === 'OK') {
-      //console.log('HomePage', data);
-      // count += 1;
-      // console.log(count);
       navigate('/content', { state: data });
     } else if (inputRef.current.value !== '') {
       alert(`${inputRef.current.value} 검색어가 올바르지 않습니다.`);

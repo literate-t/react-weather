@@ -41,8 +41,6 @@ const Map = ({ location, onClickArea }) => {
       position: new kakao.maps.LatLng(position.lat, position.lng),
     });
 
-    //console.log(position);
-
     const getData = async () => {
       const { lat, lng } = position;
       geocoder.coord2Address(lng, lat, (result, status) => {

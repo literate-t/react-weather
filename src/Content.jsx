@@ -1,11 +1,10 @@
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Map from './Map';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import RealTimeFcst from './info/RealTimeFsct';
 import ShortTimeNcst from './info/ShortTimeNcst';
 import Footer from './Footer';
-import { formatAddress } from './util';
 
 const FlexContainer = styled.section`
   display: flex;
@@ -45,18 +44,8 @@ const DivMap = styled.div`
 `;
 
 const Content = () => {
-  const { kakao } = window;
   const { state } = useLocation();
-  const { formatted_address } = state.results[0];
-  const resultStr = formatted_address.split(' ').slice(1).join(' ');
-  //console.log(state.results[0]);
   const [address, setAddress] = useState('');
-
-  // if (state) {
-  //   myState = state;
-  // }
-
-  //let loc; // = { lat: 37.60753611111111, lng: 126.9341888888889 };
 
   const result = state.results[0];
   const { location } = result.geometry;
