@@ -11,6 +11,10 @@ module.exports = {
         'process.env': JSON.stringify(process.env),
       })
     );
+
+    config.resolve.fallback = {
+      fs: false,
+    };
     config.plugins = newPlugins;
 
     return config;
