@@ -19,12 +19,14 @@ const InputSearch = styled.input`
   flex-basis: 20%;
   min-height: 2rem;
   font-size: 1rem;
+  /* position: relative;
+
   ::placeholder {
     position: absolute;
     top: 50%;
     font-size: 1rem;
     transform: translateY(-0.6rem) translateX(0.3rem);
-  }
+  } */
 `;
 
 const InputButton = styled.button`
