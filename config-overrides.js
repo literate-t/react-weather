@@ -1,12 +1,10 @@
-const webpack = require('webpack');
-
 module.exports = {
   webpack: (config, env) => {
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        'process.env': JSON.stringify(process.env),
-      })
-    );
+    const fallback = config.resolve.fallback || {};
+    Object.assign(fallback, {
+      path: require.resolve('path-browserify'),
+      os: require.resolve('os-browserify'),
+    });
 
     return config;
   },

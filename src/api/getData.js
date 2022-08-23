@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { format, getBaseDate, getArea, sortByFcstTime } from '../util';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const getPositionFromAddress = async (location) => {
   const result = await axios(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${process.env.REACT_APP_GOOGLE_GEOCODING_KEY}`
